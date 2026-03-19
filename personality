@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>✨青春探测仪 · 20题摸清人格✨</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #ffe9f4 0%, #ffe0f0 40%, #f9e6ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            margin: 0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 48px 24px 48px 24px;
+            box-shadow: 0 25px 45px -12px rgba(255, 120, 160, 0.35), 0 6px 18px rgba(255, 200, 220, 0.5);
+            width: 100%;
+            max-width: 700px;
+            padding: 32px 28px;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            transition: all 0.2s ease;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff80ab, #b57cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        h1 span {
+            background: #fff0f5;
+            padding: 5px 16px;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #b45f9b;
+            border: 1px solid #ffb6d9;
+            -webkit-text-fill-color: #a64d79;
+        }
+
+        .subhead {
+            color: #b95b9e;
+            font-weight: 500;
+            margin-bottom: 28px;
+            padding-left: 8px;
+            border-left: 6px solid #ffb0d0;
+            font-size: 1.15rem;
+        }
+
+        /* 进度条 */
+        .progress-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #ac5f8b;
+        }
+
+        .question-number {
+            background: #ffe2f0;
+            padding: 6px 20px;
+            border-radius: 60px;
+            font-size: 1rem;
+            border: 1px solid #ffb7cf;
+        }
+
+        .progress-bg {
+            background: #ffd9e8;
+            height: 16px;
+            border-radius: 30px;
+            margin: 10px 0 25px 0;
+            border: 1px solid #ffb2c9;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 5%;
+            background: linear-gradient(90deg, #ff8eb5, #cb9eff);
+            border-radius: 30px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 8px #ffa5c7;
+        }
+
+        /* 题目区域 */
+        .question-box {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 40px 18px 40px 18px;
+            padding: 28px 22px;
+            margin: 20px 0 32px 0;
+            border: 2px solid white;
+            box-shadow: 0 12px 25px -15px rgba(255, 120, 180, 0.4);
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #3a2a35;
+            margin-bottom: 28px;
+            word-break: break-word;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .option-item {
+            background: white;
+            border-radius: 50px 16px 50px 16px;
+            border: 2px solid #ffbfd7;
+            padding: 14px 22px;
+            transition: 0.2s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 8px #ffe2f0;
+        }
+
+        .option-item:hover {
+            background: #fff2f9;
+            border-color: #ff96c2;
+            transform: scale(1.01);
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ff96c2;
+            border-radius: 50%;
+            margin-right: 18px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.1s;
+            background: white;
+        }
+
+        input[type="radio"]:checked {
+            background: #ff80b0;
+            border-color: #ff4090;
+            box-shadow: 0 0 0 4px #ffe2f0 inset;
+        }
+
+        .option-text {
+            font-size: 1.1rem;
+            line-height: 1.4;
+            color: #33202a;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        /* 导航按钮 */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        button {
+            background: white;
+            border: none;
+            border-radius: 60px;
+            padding: 16px 28px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ac4985;
+            border: 2px solid #ffb7d5;
+            box-shadow: 0 7px 0 #ffbed9;
+            cursor: pointer;
+            transition: 0.08s linear;
+            flex: 1;
+            text-align: center;
+            backdrop-filter: blur(4px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        button:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px 0 #ffa7c9;
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            transform: none;
+            box-shadow: 0 7px 0 #ffbed9;
+            pointer-events: none;
+            border-color: #ffdbec;
+        }
+
+        #nextBtn {
+            background: #ffd3e6;
+            color: #9f3f73;
+            border-color: #ff8bbe;
+            font-weight: 800;
+        }
+
+        /* 结果页 */
+        .result-area {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 40px 18px 40px 18px;
+            padding: 32px 24px;
+            border: 2px solid white;
+        }
+
+        .result-badge {
+            background: #ffecf2;
+            border-radius: 60px;
+            padding: 12px 22px;
+            display: inline-block;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            border: 3px solid #ffbed0;
+            color: #a1336b;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 30px;
+            padding: 28px;
+            box-shadow: 0 8px 0 #ffbed9;
+            border: 2px solid #ffb2cf;
+            margin: 20px 0;
+        }
+
+        .result-card h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #ff6f9d, #b462d6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .tag {
+            background: #fbe4ff;
+            border-radius: 40px;
+            padding: 8px 18px;
+            font-weight: 600;
+            color: #a84378;
+            display: inline-block;
+            margin: 12px 0 16px;
+            border: 1px solid #e2b0ff;
+        }
+
+        .statistics {
+            background: #ffeef6;
+            border-radius: 24px;
+            padding: 18px;
+            font-size: 1.1rem;
+            color: #572b46;
+            margin: 20px 0 10px;
+            border: 1px dashed #ff9fc7;
+        }
+
+        .restart-btn {
+            background: #d9b0ff;
+            border-color: #b96bff;
+            color: #381c48;
+            box-shadow: 0 7px 0 #b78bff;
+            margin-top: 12px;
+            font-size: 1.3rem;
+            padding: 18px;
+        }
+
+        .footer-note {
+            color: #ad6989;
+            text-align: center;
+            margin-top: 28px;
+            font-weight: 500;
+        }
+
+        /* 手机优化 */
+        @media (max-width: 500px) {
+            .card { padding: 20px 16px; }
+            h1 { font-size: 1.9rem; }
+            .question-text { font-size: 1.3rem; }
+            .option-item { padding: 12px 16px; }
+            .option-text { font-size: 1rem; }
+            button { padding: 14px 16px; font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="card" id="app">
+    <h1>🔮 青春探测仪 <span>20题摸清隐藏人格</span></h1>
+    <div class="subhead">✨ 按真实第一反应选，别思考“应该” ✨</div>
+
+    <!-- 答题区 -->
+    <div id="quizSection">
+        <div class="progress-row">
+            <span class="question-number" id="questionCounter">第 1 / 20 题</span>
+        </div>
+        <div class="progress-bg">
+            <div class="progress-fill" id="progressFill" style="width: 5%;"></div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text" id="questionText">加载题目中...</div>
+            <div class="options" id="optionsContainer"></div>
+        </div>
+
+        <div class="nav-buttons">
+            <button id="prevBtn" disabled>⬅️ 上一题</button>
+            <button id="nextBtn">下一题 ➡️</button>
+        </div>
+        <div class="footer-note">🌸 选完才能看报告哟 🌸</div>
+    </div>
+
+    <!-- 结果区 (初始隐藏) -->
+    <div id="resultSection" style="display: none;">
+        <div class="result-area">
+            <div class="result-badge" id="resultTypeTitle"></div>
+            <div class="result-card" id="resultDescription">
+                <!-- 动态插入分析内容 -->
+            </div>
+            <div class="statistics" id="statisticDisplay"></div>
+            <button class="restart-btn" id="restartBtn">✨ 再测一次 ✨</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- 20道测试题数据 ----------
+        const questions = [
+            { text: "暑假还剩最后3天，你的作业还有大半，你会？", options: ["A. 虽然慌得一批，但先睡一觉/玩会手机，反正 Deadline 才是第一生产力。", "B. 制定严格的“三天拯救计划”，精确到小时，然后强迫自己执行。", "C. 疯狂焦虑，一边哭一边写，并在朋友圈发“谁懂，家人们谁懂啊”。", "D. 找几个兄弟姐们的作业“借鉴”一下，或者直接摆烂，爱咋咋地。"] },
+            { text: "班级群里突然有人@全体成员，你的第一反应是？", options: ["A. 心里咯噔一下，但选择装死，等有人冒泡了再跟着+1。", "B. 立刻点开，看完要求，如果是自己的任务马上回复“收到”。", "C. 很烦躁，甚至想把群设置为免打扰，觉得@全体成员很烦人。", "D. 马上冒泡，并开始水群，把话题带歪。"] },
+            { text: "朋友因为失恋找你哭诉，你会怎么做？", options: ["A. 默默听着，递纸巾，虽然心里在想“晚上吃啥”，但表面很专注。", "B. 化身情感导师，帮她分析那男的有多渣，告诉她下一步该怎么做。", "C. 比朋友哭得还惨，感觉是自己失恋了，情绪完全被感染。", "D. “走！请你吃顿好的/喝奶茶，没有什么是一顿烧烤解决不了的！”"] },
+            { text: "老师布置了一个超难的“开放性探索”作业（没有标准答案），你觉得？", options: ["A. 太棒了，可以天马行空，做一些很酷但没什么用的东西。", "B. 有点慌，希望老师能给个框架，不然不知道从哪下手。", "C. 很焦虑，怕自己做不好，怕被老师批评，反复纠结。", "D. 直接搜“类似作业模板”，改一改交上去算了，不想动脑子。"] },
+            { text: "你的书桌/房间通常是？", options: ["A. 乱中有序，虽然衣服堆成山，但我能找到任何我想找的东西。", "B. 井井有条，东西必须放回原处，看到乱就浑身难受。", "C. 无所谓，只要不让我收拾，乱成猪窝我也能住。", "D. 经常心血来潮大扫除，但保持不过三天。"] },
+            { text: "面对“小组作业划水的组员”，你会？", options: ["A. 默默把他的活干了，虽然心里不爽，但懒得吵架。", "B. 直接开怼：“你能不能干？不干就把你名字去掉。”", "C. 一个人生闷气，跟闺蜜吐槽八百遍，但当面不敢说。", "D. 无所谓，反正我也划水，大家一起摆烂咯。"] },
+            { text: "你觉得自己更偏向？", options: ["A. 比起热闹的聚会，我更享受一个人听歌/看书的周末。", "B. 周末不出去玩？那不是虚度光阴吗！必须约起来！", "C. 看心情，心情好就是社牛，心情不好就是社恐。", "D. 我是气氛组，哪里热闹往哪钻，光吃光笑也行。"] },
+            { text: "看剧/看电影时，你更容易？", options: ["A. 关注服化道、背景音乐、导演的拍摄手法，甚至会去查影评。", "B. 关注逻辑！主角这波操作不合常理，直接弃剧。", "C. 完全代入，主角哭我也哭，主角笑我也笑，看完走不出来。", "D. 关注弹幕，边看边吐槽，纯属娱乐，看完就忘。"] },
+            { text: "明天有一个重要的考试，你今晚会？", options: ["A. 虽然复习完了，但就是睡不着，东想西想。", "B. 正常睡觉，觉得复习得差不多了，明天正常发挥就行。", "C. 焦虑到失眠，反复确认文具带没带，害怕明天遇到不会的题。", "D. 打游戏到凌晨，告诉自己“放松一下明天考得更好”。"] },
+            { text: "在陌生人面前，你通常是？", options: ["A. 高冷范儿，别人不跟我说话，我绝不开口，怕尴尬。", "B. 礼貌且疏离，会主动打招呼，但不会深聊。", "C. 看对方态度，对方热情我就热情，对方冷淡我也冷淡。", "D. 自来熟！五分钟后就能跟人勾肩搭背，什么都能聊。"] },
+            { text: "对于未来的规划，你更倾向于？", options: ["A. 人生有无限种可能，我不想被定义，走到哪算哪。", "B. 必须要有清晰的职业规划，几年内买房，几年内升职。", "C. 经常变，今天想当医生，明天觉得当网红也挺好，很迷茫。", "D. 没想过，过好今天就行，想太多会掉头发。"] },
+            { text: "看到网上有争议的社会热点，你会？", options: ["A. 默默吃瓜，看两边打架，自己心里有杆秤但懒得下场。", "B. 逻辑清晰地写一篇小作文分析对错，然后发出去。", "C. 很容易被带节奏，看到一篇觉得有道理，看到反方又觉得也对。", "D. 只看娱乐板块，这种费脑子的事不参与。"] },
+            { text: "你的朋友觉得你是个怎样的人？", options: ["A. 靠谱但有点闷骚，熟了之后是个话痨。", "B. 大管家/领头羊，有你在就很安心，或者觉得你有点固执。", "C. 心思细腻，很会照顾人情绪，但可能有点敏感玻璃心。", "D. 开心果，搞笑男/女，有你在永远不会冷场。"] },
+            { text: "做决定的时候，你通常更依赖？", options: ["A. 直觉！相信第六感，感觉对了就对了。", "B. 逻辑！用Excel表格列出利弊，理性分析。", "C. 内心感受！这件事让我开不开心？值不值得？", "D. 看心情，或者问妈妈/问闺蜜。"] },
+            { text: "如果你中了500万，你第一件事会？", options: ["A. 环游世界，体验不同的生活，寻找生命的意义。", "B. 先存起来，规划怎么投资，买基金还是买房。", "C. 给爸妈买礼物，给好朋友分一点，自己留一点慢慢花。", "D. 发朋友圈，请全班同学吃饭，享受被簇拥的感觉。"] },
+            { text: "你觉得自己在团队中最常扮演的角色是？", options: ["A. 观察者/思考者，不说话则已，一说话一针见血。", "B. 领导者/执行者，负责分工和把控进度。", "C. 粘合剂/调和者，负责照顾每个人的情绪，劝架。", "D. 气氛组，负责搞笑和活跃气氛，偶尔摸鱼。"] },
+            { text: "对于“规则”这件事，你的看法是？", options: ["A. 规则就是用来打破的，只要我想，没什么不行。", "B. 无规矩不成方圆，必须遵守，不然就乱套了。", "C. 只要不伤害别人，稍微变通一下是可以的。", "D. 什么规则？没看到。"] },
+            { text: "你更容易记住的是？", options: ["A. 过去发生的某个场景的画面、气味和当时的感觉。", "B. 事情发生的具体日期、人名和事情的逻辑顺序。", "C. 当时别人对我的态度，谁对我好，谁对我不好。", "D. 搞笑的表情包和网络热梗。"] },
+            { text: "你在压力极大的时候，会？", options: ["A. 把自己关起来，谁也不想理，自己消化。", "B. 必须找个人说出来，或者通过运动/吃东西发泄出来。", "C. 疯狂购物/暴饮暴食，用物质填补内心的空虚。", "D. 摆烂，躺平，啥也不干，直到最后一刻。"] },
+            { text: "你理想中的“完美一天”是？", options: ["A. 一个人去逛博物馆/书店，然后在咖啡店发呆一整天。", "B. 按计划完成了所有To Do List，非常有成就感。", "C. 和家人/好朋友待在一起，哪怕什么都不做，也很温暖。", "D. 和一群朋友去游乐园疯玩，然后深夜吃烧烤聊八卦。"] }
+        ];
+
+        // ---------- 人格报告映射 ----------
+        const reportMap = {
+            A: {
+                title: "🧠 清醒的观察家",
+                badge: "INxx · 高开放性",
+                desc: "<h3>『人群中那个最独特的灵魂』</h3><p class='tag'>有点社恐，但脑子很酷</p><p>✨ <strong>特点分析</strong>：你就像动漫里那个戴耳机的主角，看起来冷冷的，其实内心戏超多，而且有个丰富的宇宙。你享受独处，对世界充满好奇，喜欢研究没用的知识。在朋友眼里，你可能是“最佳树洞”，因为你善于倾听且总能给出犀利的见解。</p><p>💧 <strong>青春痛点</strong>：容易被人误会“高冷”、“不合群”。有时候想得太多，做得太少，容易陷入精神内耗。</p><p>🌱 <strong>成长建议</strong>：试着把你的奇思妙想表达出来，哪怕只是发个朋友圈。你的独特不是缺陷，是超能力！<br>📍 <em>参考人格：INTP / INFP</em></p>"
+            },
+            B: {
+                title: "🏆 人形锦鲤 / 卷王之王",
+                badge: "xSTJ · 高尽责性",
+                desc: "<h3>『这个家/班/组没你不行！』</h3><p class='tag'>靠谱本靠！</p><p>✨ <strong>特点分析</strong>：你就是传说中的“别人家的孩子”！执行力Max，逻辑清晰，做啥事都有条理。有你在，小组作业就有了主心骨。你信奉“凡事预则立”，对未来有清晰的规划，是注定要干大事的人。</p><p>💧 <strong>青春痛点</strong>：容易给自己太大压力，显得有点“紧绷”。偶尔会被别人说“固执”、“太较真”，缺乏点生活情趣。</p><p>🌱 <strong>成长建议</strong>：偶尔允许自己“摆烂”一天，你会发现天塌不下来。试着接受计划外的惊喜，人生不是只有KPI，还有奶茶和夕阳。<br>📍 <em>参考人格：ESTJ / ISTJ</em></p>"
+            },
+            C: {
+                title: "🫂 高敏感小天使",
+                badge: "xFxJ · 高宜人 & 高神经质",
+                desc: "<h3>『世界以痛吻我，我报之以歌』</h3><p class='tag'>但你先别吻，我疼</p><p>✨ <strong>特点分析</strong>：你是朋友圈里的“情绪感应器”，谁不开心你第一个知道。你善良、体贴，总是优先考虑别人的感受。但你也很容易内耗，会因为别人一句无心的话emo一整天。你的共情能力是你的天赋，也是你的软肋。</p><p>💧 <strong>青春痛点</strong>：讨好型人格预警！总是委屈自己成全别人。情绪像过山车，容易被人拿捏。</p><p>🌱 <strong>成长建议</strong>：亲爱的，你的善良必须带点锋芒。先爱自己，再爱别人。学会说“不”，你会发现，真正的朋友不会因为你拒绝而离开。<br>📍 <em>参考人格：ISFJ / INFJ</em></p>"
+            },
+            D: {
+                title: "🐶 快乐修勾 / 社交悍匪",
+                badge: "ExxP · 高外向 & 低尽责",
+                desc: "<h3>『管他呢！先快乐再说！』</h3><p class='tag'>全宇宙都是我的游乐场</p><p>✨ <strong>特点分析</strong>：只要有你在，气氛永远不会尴尬！你是天生的社交达人，能量满满， spontaneity是你的代名词。你喜欢新鲜感，讨厌枯燥的计划和规则。你的朋友都超爱你，因为你就是快乐的源泉。</p><p>💧 <strong>青春痛点</strong>：三分钟热度，做事容易虎头蛇尾。有时候太嗨了，没注意到别人的情绪，或者不小心“嘴比脑子快”得罪人。</p><p>🌱 <strong>成长建议</strong>：你的快乐很有感染力，但也要学会承担责任。试着把一件事坚持做下去，哪怕只是每天给花浇水。偶尔收一收你的锋芒，你会发现安静的世界也很美。<br>📍 <em>参考人格：ESFP / ENFP</em></p>"
+            },
+            E: {   // 端水大师
+                title: "⚖️ 端水大师 / 六边形战士",
+                badge: "均衡型 · 可i可e",
+                desc: "<h3>『人格界的米其林三星主厨』</h3><p class='tag'>把各种特质都调和得恰到好处</p><p>✨ <strong>特点分析</strong>：你既能在人群中狂欢，也能享受独处的宁静；既有冲劲，也能沉下心。你适应性极强，是传说中的“可i可e”。你没什么性格短板，是大家眼中情绪稳定、最好相处的那个人。</p><p>💧 <strong>青春痛点</strong>：可能偶尔会觉得迷茫，不知道自己到底“最”想要什么，有点随波逐流。</p><p>🌱 <strong>成长建议</strong>：你的中庸是你的优势，可以试着在某个你特别感兴趣的领域深挖一下，找到你独特的热情所在！</p>"
+            }
+        };
+
+        // 核心数据
+        const totalQ = questions.length;
+        let answers = new Array(totalQ).fill(null);      // 存储每道题选的 A/B/C/D
+        let currentIndex = 0;                            // 0-19
+
+        // DOM 元素
+        const quizSection = document.getElementById('quizSection');
+        const resultSection = document.getElementById('resultSection');
+        const questionCounter = document.getElementById('questionCounter');
+        const progressFill = document.getElementById('progressFill');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const resultTypeTitle = document.getElementById('resultTypeTitle');
+        const resultDescription = document.getElementById('resultDescription');
+        const statisticDisplay = document.getElementById('statisticDisplay');
+
+        // 更新界面: 渲染当前题目 (currentIndex)
+        function renderQuestion() {
+            const q = questions[currentIndex];
+            questionText.innerText = q.text;
+            // 生成选项html
+            let htmlStr = '';
+            for (let i = 0; i < q.options.length; i++) {
+                const opt = q.options[i];
+                const optLetter = opt[0]; // A, B, C, D
+                const checked = (answers[currentIndex] === optLetter) ? 'checked' : '';
+                htmlStr += `
+                    <label class="option-item">
+                        <input type="radio" name="questionOpt" value="${optLetter}" ${checked}>
+                        <span class="option-text">${opt}</span>
+                    </label>
+                `;
+            }
+            optionsContainer.innerHTML = htmlStr;
+
+            // 更新题号、进度条
+            questionCounter.innerText = `第 ${currentIndex+1} / ${totalQ} 题`;
+            const percent = ((currentIndex + 1) / totalQ) * 100;
+            progressFill.style.width = percent + '%';
+
+            // 处理上一题按钮禁用
+            prevBtn.disabled = (currentIndex === 0);
+
+            // 下一题按钮文字
+            if (currentIndex === totalQ - 1) {
+                nextBtn.innerText = '📋 查看结果 📋';
+            } else {
+                nextBtn.innerText = '下一题 ➡️';
+            }
+        }
+
+        // 通过事件代理监听选项变化，更新answers
+        optionsContainer.addEventListener('change', function(e) {
+            if (e.target.name === 'questionOpt') {
+                answers[currentIndex] = e.target.value;
+            }
+        });
+
+        // 上一题
+        prevBtn.addEventListener('click', function() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+            }
+        });
+
+        // 下一题 / 提交
+        nextBtn.addEventListener('click', function() {
+            // 检查当前题目有没有选中
+            if (answers[currentIndex] === null) {
+                alert('🌸 选一下嘛，不要害羞～ 这题得选才能继续～');
+                return;
+            }
+
+            // 如果是最后一题 → 显示结果
+            if (currentIndex === totalQ - 1) {
+                // 确保所有题目都答了
+                const missing = answers.findIndex(ans => ans === null);
+                if (missing !== -1) {
+                    alert(`还有第 ${missing+1} 题没选哟，回到前面答完才能生成报告～`);
+                    // 跳转到缺失题
+                    currentIndex = missing;
+                    renderQuestion();
+                    return;
+                }
+                // 计算并展示结果
+                showResult();
+            } else {
+                // 不是最后一题，下一题
+                currentIndex++;
+                renderQuestion();
+            }
+        });
+
+        // 重新测试
+        restartBtn.addEventListener('click', function() {
+            answers.fill(null);
+            currentIndex = 0;
+            renderQuestion();
+            resultSection.style.display = 'none';
+            quizSection.style.display = 'block';
+        });
+
+        // 统计函数：返回{ A: count, B: count, C: count, D: count }
+        function countAnswers() {
+            const counts = { A:0, B:0, C:0, D:0 };
+            answers.forEach(ans => { if (ans) counts[ans]++; });
+            return counts;
+        }
+
+        // 根据counts确定类型: 'A','B','C','D' 或 'E'(端水)
+        function determineType(counts) {
+            const values = [counts.A, counts.B, counts.C, counts.D];
+            const maxVal = Math.max(...values);
+            // 找出所有等于maxVal的选项
+            const maxItems = [];
+            if (counts.A === maxVal) maxItems.push('A');
+            if (counts.B === maxVal) maxItems.push('B');
+            if (counts.C === maxVal) maxItems.push('C');
+            if (counts.D === maxVal) maxItems.push('D');
+
+            if (maxItems.length === 1) {
+                return maxItems[0];   // 唯一最多
+            } else {
+                return 'E';  // 端水大师
+            }
+        }
+
+        // 显示结果页
+        function showResult() {
+            const counts = countAnswers();
+            const typeKey = determineType(counts);
+            const report = reportMap[typeKey];
+
+            resultTypeTitle.innerText = report.title + ' ' + report.badge;
+            resultDescription.innerHTML = report.desc;
+
+            // 统计数据显示
+            const total = totalQ;
+            statisticDisplay.innerHTML = `
+                <div>📊 你的选项分布</div>
+                <div style="display:flex; justify-content:space-around; margin-top:15px; flex-wrap:wrap;">
+                    <span style="background:#ffd4e6; padding:8px 16px; border-radius:40px;">🅰️ A: ${counts.A}</span>
+                    <span style="background:#ffd4e6; padding:8px 16px; border-radius:40px;">🅱️ B: ${counts.B}</span>
+                    <span style="background:#ffd4e6; padding:8px 16px; border-radius:40px;">🅲️ C: ${counts.C}</span>
+                    <span style="background:#ffd4e6; padding:8px 16px; border-radius:40px;">🅳️ D: ${counts.D}</span>
+                </div>
+                <p style="margin-top:14px;">${typeKey === 'E' ? '🌟 雨露均沾 · 端水艺术家' : '🔮 你的主型如上，超准！'}</p>
+            `;
+
+            // 切换显示
+            quizSection.style.display = 'none';
+            resultSection.style.display = 'block';
+        }
+
+        // 初始化第一题
+        renderQuestion();
+
+        // 点击label也可以触发radio，但change事件已覆盖
+    })();
+</script>
+</body>
+</html>
